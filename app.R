@@ -1,4 +1,14 @@
 
+
+######################################################
+
+#ATTENZIONE!
+#TRAMITE QUESTA SOLA RIGA E' POSSIBILE APRIRE L'APP:
+
+# shiny::runGitHub( "AsteEnergiaElettrica", "MMazzei3")
+
+######################################################
+
 library(shiny)
 library(shinyWidgets)
 library(lubridate)
@@ -7,6 +17,7 @@ library(plotly)
 library(tidyr)
 library(dplyr)
 library(shinythemes)
+
 load("data/DATI_PULITI2.RData")
 #RIS.HELLO <- read.csv("data/RIS_HELLO.csv")
 RIS.HELLO <- read.csv("data/RIS_ENERGY_HELLO.csv")
@@ -26,6 +37,7 @@ source("Funzioni2.R")
 ui <-  navbarPage(title = "Asta Energia Elettrica",
                   theme = shinytheme("journal"),
                   tabPanel(title="Contesto",
+                           h6(em("Manuel Generoso & Marco Mazzei - Università degli Studi di Milano Bicocca"), align = "right"), 
                            br(),
                            br(), 
                            "Il", 
@@ -223,8 +235,8 @@ server <- function(input, output) {
         xlab("") + ylab("Prezzo in euro") +
         ggtitle("Consumo di energia elettrica negli anni 2015-2020") +
         facet_wrap(~ ANNO, scales = "free",nrow = 3, ncol = 2) + 
-        theme(plot.title = element_text(hjust = 0.5))+
-        theme_light()
+        theme_light()+
+        theme(plot.title = element_text(hjust = 0.5))
       
       ggplotly()
     }else if(input$e2 == 2){
@@ -235,8 +247,8 @@ server <- function(input, output) {
         xlab("") + ylab("Quantià in MWh") +
         ggtitle("Consumo di energia elettrica negli anni 2015-2020") +
         facet_wrap(~ANNO, scales = "free",nrow = 3, ncol = 2) + 
-        theme(plot.title = element_text(hjust = 0.5))+
-        theme_light()
+        theme_light()+
+        theme(plot.title = element_text(hjust = 0.5))
       
       ggplotly()
     }
@@ -303,7 +315,7 @@ server <- function(input, output) {
         geom_line(aes(linetype = Legenda)) +
         scale_colour_manual(values = c("coral", "cornflowerblue", rep("gray80", NROW(unique(fit$Splines$Giorno))))) + 
         scale_linetype_manual(values = c("solid", "solid", rep("dotdash", NROW(unique(fit$Splines$Giorno))))) + 
-        xlab("Prezzo in euro") + ylab("Quantita cumulata in MWh") + 
+        xlab("Prezzo in euro") + ylab("Quantità cumulata in MWh") + 
         ggtitle(paste0("Curva di offerta di ", weekdays(input$AnnoMeseGiorno), " ", input$AnnoMeseGiorno)) + 
         theme_light() + 
         theme(plot.title = element_text(hjust = 0.5))
@@ -315,7 +327,7 @@ server <- function(input, output) {
       RIS.ENERGY %>% filter(Giorno == input$AnnoMeseGiorno) %>% 
         ggplot(aes(Price, Quantity, col = Legenda)) + geom_line() + 
         scale_colour_manual(values = c("coral", "cornflowerblue")) +
-        xlab("Prezzo in euro") + ylab("Quantita cumulata in MWh") + 
+        xlab("Prezzo in euro") + ylab("Quantità cumulata in MWh") + 
         ggtitle(paste0("Curva di offerta di ", weekdays(input$AnnoMeseGiorno), " ", input$AnnoMeseGiorno)) + 
         theme_light() + 
         theme(plot.title = element_text(hjust = 0.5))
@@ -325,7 +337,7 @@ server <- function(input, output) {
       RIS.HELLO %>% filter(Giorno == input$AnnoMeseGiorno) %>% 
         ggplot(aes(Price, Quantity, col = Legenda)) + geom_line() + 
         scale_colour_manual(values = c("coral", "cornflowerblue")) +
-        xlab("Prezzo in euro") + ylab("Quantita cumulata in MWh") + 
+        xlab("Prezzo in euro") + ylab("Quantità cumulata in MWh") + 
         ggtitle(paste0("Curva di offerta di ", weekdays(input$AnnoMeseGiorno), " ", input$AnnoMeseGiorno)) + 
         theme_light() + 
         theme(plot.title = element_text(hjust = 0.5))
@@ -354,7 +366,7 @@ server <- function(input, output) {
       d %>%
         ggplot(aes(Price, Quantity, col = Legenda)) + geom_line() +
         scale_colour_manual(values = c("coral", "cornflowerblue")) +
-        xlab("Prezzo in euro") + ylab("Quantita cumulata in MWh") +
+        xlab("Prezzo in euro") + ylab("Quantità cumulata in MWh") +
         ggtitle(paste0("Curva di offerta di ", weekdays(input$AnnoMeseGiorno), " ", input$AnnoMeseGiorno)) +
         facet_wrap(~ Modello, scales = "free") + 
         theme_light() + 
